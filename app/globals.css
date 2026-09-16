@@ -1,0 +1,300 @@
+@import "tailwindcss";
+
+/* ===========================================================================
+   Design tokens — "Developer Docs" world.
+
+   Warm-white doc surface, near-black ink, one restrained indigo accent
+   reserved for links, active nav, and status. Semantic names so dark mode
+   is one block of overrides rather than a `dark:` variant on every element.
+   =========================================================================== */
+
+:root {
+  --background: #fafaf8;
+  --surface: #ffffff;
+  --surface-subtle: #f3f3f0;
+  --foreground: #14141a;
+  --muted: #63636f;
+  --muted-strong: #3d3d47;
+  --border: #e5e4e0;
+  --border-strong: #cfcdc7;
+
+  --accent: #4338ca;
+  --accent-hover: #372da3;
+  --accent-soft: #ecebfb;
+  --accent-foreground: #ffffff;
+
+  --live: #16764a;
+  --live-soft: #e7f5ee;
+  --pending: #b45309;
+  --pending-soft: #fef3c7;
+  --danger: #b3261e;
+  --danger-soft: #fdecea;
+
+  --shadow-panel: 0 1px 2px rgb(20 20 26 / 0.04), 0 6px 16px rgb(20 20 26 / 0.06);
+  --shadow-raised: 0 4px 10px rgb(20 20 26 / 0.08), 0 16px 32px rgb(20 20 26 / 0.1);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0e0e13;
+    --surface: #16161d;
+    --surface-subtle: #1c1c25;
+    --foreground: #eeeeec;
+    --muted: #9a9aa4;
+    --muted-strong: #c4c4cc;
+    --border: #2a2a34;
+    --border-strong: #3c3c48;
+
+    --accent: #9d97f5;
+    --accent-hover: #b3aef8;
+    --accent-soft: #232052;
+    --accent-foreground: #14141a;
+
+    --live: #5fc79a;
+    --live-soft: #12291f;
+    --pending: #f0a939;
+    --pending-soft: #2b2210;
+    --danger: #f2837b;
+    --danger-soft: #2b1413;
+
+    --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 16px rgb(0 0 0 / 0.28);
+    --shadow-raised: 0 4px 10px rgb(0 0 0 / 0.35), 0 16px 32px rgb(0 0 0 / 0.4);
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-strong: var(--muted-strong);
+  --color-border-base: var(--border);
+  --color-border-strong: var(--border-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-live: var(--live);
+  --color-live-soft: var(--live-soft);
+  --color-pending: var(--pending);
+  --color-pending-soft: var(--pending-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+
+  --font-sans: var(--font-body);
+  --font-mono: var(--font-code);
+
+  --shadow-panel: var(--shadow-panel);
+  --shadow-raised: var(--shadow-raised);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  letter-spacing: -0.011em;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+code, kbd, .tabular {
+  font-family: var(--font-code), ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-feature-settings: "tnum" 1;
+}
+
+@layer base {
+  *,
+  ::after,
+  ::before {
+    border-color: var(--border);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+    color: var(--foreground);
+  }
+
+  /* Custom scrollbar for the doc-panel scroll areas — a browser surface the
+     design system should own, not leave to the platform default. */
+  .doc-scroll::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  .doc-scroll::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .doc-scroll::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 6px;
+    border: 2px solid var(--surface);
+  }
+
+  .panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-panel);
+  }
+}
+
+/* ===========================================================================
+   Backdrop — a faint blueprint-grid texture, the engineering-drawing motif
+   underneath the whole surface rather than a flat, empty ground.
+   =========================================================================== */
+
+.grid-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(to right, var(--border) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--border) 1px, transparent 1px);
+  background-size: 48px 48px;
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, black 0%, transparent 70%);
+  opacity: 0.35;
+}
+
+/* ===========================================================================
+   Motion — respects prefers-reduced-motion; content is visible by default
+   and animation is additive, never the only path to a visible state.
+   =========================================================================== */
+
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  @keyframes blink-caret {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  @keyframes rise-blur {
+    from {
+      opacity: 0;
+      transform: translateY(16px) scale(0.98);
+      filter: blur(6px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+      filter: blur(0);
+    }
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      box-shadow: 0 0 0 0 color-mix(in srgb, var(--live) 45%, transparent);
+    }
+    100% {
+      box-shadow: 0 0 0 8px color-mix(in srgb, var(--live) 0%, transparent);
+    }
+  }
+
+  @keyframes glow-breathe {
+    0%, 100% { opacity: 0.55; }
+    50% { opacity: 0.9; }
+  }
+
+  .anim-rise {
+    animation: rise-blur 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .anim-stagger > * {
+    animation: rise-blur 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .anim-stagger > *:nth-child(1) { animation-delay: 0.02s; }
+  .anim-stagger > *:nth-child(2) { animation-delay: 0.1s; }
+  .anim-stagger > *:nth-child(3) { animation-delay: 0.2s; }
+  .anim-stagger > *:nth-child(4) { animation-delay: 0.3s; }
+  .anim-stagger > *:nth-child(5) { animation-delay: 0.4s; }
+
+  @supports (animation-timeline: view()) {
+    .reveal {
+      animation: rise-blur 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 5% cover 30%;
+    }
+
+    .reveal-group > * {
+      animation: rise-blur 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-timeline: view();
+      animation-range: entry 2% cover 26%;
+    }
+  }
+
+  .caret {
+    animation: blink-caret 0.9s step-end infinite;
+  }
+
+  .pulse-ring {
+    animation: pulse-ring 2.2s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+  }
+
+  .glow-breathe {
+    animation: glow-breathe 4s ease-in-out infinite;
+  }
+
+  /* Sliding active-nav indicator — a single pill that travels between items
+     rather than snapping, tracked via a --nav-active-y custom property. */
+  .nav-indicator {
+    transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* A marker that travels down the experience timeline's rail as it scrolls
+     through view — literally a "time passing" animation, driven by scroll
+     rather than the clock. transform (not top) so the view-timeline's own
+     progress measurement never feeds back on itself. */
+  .timeline-scrubber {
+    position: absolute;
+    left: -33px;
+    top: 0;
+    height: 100%;
+    width: 12px;
+    pointer-events: none;
+  }
+  .timeline-scrubber::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 9999px;
+    background: var(--accent);
+    box-shadow: 0 0 0 4px var(--accent-soft), 0 0 14px 3px color-mix(in srgb, var(--accent) 65%, transparent);
+  }
+
+  @keyframes travel-down {
+    from { transform: translateY(0%); }
+    to { transform: translateY(calc(100% - 12px)); }
+  }
+
+  @supports (animation-timeline: view()) {
+    .timeline-scrubber {
+      animation: travel-down linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+  }
+}
