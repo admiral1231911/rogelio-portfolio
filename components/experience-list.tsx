@@ -72,7 +72,9 @@ export function LogoTile({ src, alt, size = 56 }: { src: string; alt: string; si
 
 export function ExperienceList() {
   return (
-    <ol className="reveal-group relative space-y-10 border-l border-border pl-6">
+    <ol className="reveal-group relative space-y-10 pl-6">
+      <li className="absolute -left-[25px] top-0 h-full w-0.5 bg-border-strong" aria-hidden="true" />
+      <li className="timeline-rail-progress" aria-hidden="true" />
       <li className="timeline-scrubber" aria-hidden="true" />
       {ROLES.map((role) => (
         <li key={role.org} className="relative reveal">

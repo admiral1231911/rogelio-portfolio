@@ -2,6 +2,30 @@
 
 type IconProps = { className?: string };
 
+export function SunIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.75">
+      <circle cx="12" cy="12" r="4.25" />
+      <path
+        d="M12 3v2.25M12 18.75V21M4.4 4.4l1.6 1.6M18 18l1.6 1.6M3 12h2.25M18.75 12H21M4.4 19.6l1.6-1.6M18 6l1.6-1.6"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+export function MoonIcon({ className = "h-5 w-5" }: IconProps) {
+  return (
+    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.75">
+      <path
+        d="M20 14.5A8.5 8.5 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
 export function MailIcon({ className = "h-5 w-5" }: IconProps) {
   return (
     <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.75">

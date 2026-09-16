@@ -8,7 +8,38 @@
    is one block of overrides rather than a `dark:` variant on every element.
    =========================================================================== */
 
+/*
+ * Dark is the site default, unconditionally — not tied to system
+ * preference. Light is an explicit opt-in via data-theme="light", set by
+ * the toggle (components/theme-toggle.tsx) and remembered in localStorage.
+ */
 :root {
+  --background: #0e0e13;
+  --surface: #16161d;
+  --surface-subtle: #1c1c25;
+  --foreground: #eeeeec;
+  --muted: #9a9aa4;
+  --muted-strong: #c4c4cc;
+  --border: #2a2a34;
+  --border-strong: #3c3c48;
+
+  --accent: #9d97f5;
+  --accent-hover: #b3aef8;
+  --accent-soft: #232052;
+  --accent-foreground: #14141a;
+
+  --live: #5fc79a;
+  --live-soft: #12291f;
+  --pending: #f0a939;
+  --pending-soft: #2b2210;
+  --danger: #f2837b;
+  --danger-soft: #2b1413;
+
+  --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 16px rgb(0 0 0 / 0.28);
+  --shadow-raised: 0 4px 10px rgb(0 0 0 / 0.35), 0 16px 32px rgb(0 0 0 / 0.4);
+}
+
+:root[data-theme="light"] {
   --background: #fafaf8;
   --surface: #ffffff;
   --surface-subtle: #f3f3f0;
@@ -34,31 +65,13 @@
   --shadow-raised: 0 4px 10px rgb(20 20 26 / 0.08), 0 16px 32px rgb(20 20 26 / 0.1);
 }
 
-@media (prefers-color-scheme: dark) {
+/* Token changes should feel instant, not tweened — but respect reduced motion. */
+@media (prefers-reduced-motion: no-preference) {
   :root {
-    --background: #0e0e13;
-    --surface: #16161d;
-    --surface-subtle: #1c1c25;
-    --foreground: #eeeeec;
-    --muted: #9a9aa4;
-    --muted-strong: #c4c4cc;
-    --border: #2a2a34;
-    --border-strong: #3c3c48;
-
-    --accent: #9d97f5;
-    --accent-hover: #b3aef8;
-    --accent-soft: #232052;
-    --accent-foreground: #14141a;
-
-    --live: #5fc79a;
-    --live-soft: #12291f;
-    --pending: #f0a939;
-    --pending-soft: #2b2210;
-    --danger: #f2837b;
-    --danger-soft: #2b1413;
-
-    --shadow-panel: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 16px rgb(0 0 0 / 0.28);
-    --shadow-raised: 0 4px 10px rgb(0 0 0 / 0.35), 0 16px 32px rgb(0 0 0 / 0.4);
+    transition: background-color 0.25s ease, color 0.25s ease;
+  }
+  body, .panel, .grid-backdrop {
+    transition: background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
   }
 }
 
@@ -261,13 +274,26 @@ code, kbd, .tabular {
     transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
   }
 
-  /* A marker that travels down the experience timeline's rail as it scrolls
-     through view — literally a "time passing" animation, driven by scroll
-     rather than the clock. transform (not top) so the view-timeline's own
-     progress measurement never feeds back on itself. */
+  /* The rail itself doubles as a progress bar: a green fill grows from the
+     top as the timeline scrolls through view, "time already covered"
+     literally filling in behind you — same color as the live status dot,
+     same marker riding its leading edge. transform (not height) so the
+     view-timeline's own progress measurement never feeds back on itself. */
+  .timeline-rail-progress {
+    position: absolute;
+    left: -25px;
+    top: 0;
+    width: 2px;
+    height: 100%;
+    background: var(--live);
+    transform: scaleY(0);
+    transform-origin: top;
+    pointer-events: none;
+  }
+
   .timeline-scrubber {
     position: absolute;
-    left: -33px;
+    left: -30px;
     top: 0;
     height: 100%;
     width: 12px;
@@ -281,8 +307,8 @@ code, kbd, .tabular {
     width: 12px;
     height: 12px;
     border-radius: 9999px;
-    background: var(--accent);
-    box-shadow: 0 0 0 4px var(--accent-soft), 0 0 14px 3px color-mix(in srgb, var(--accent) 65%, transparent);
+    background: var(--live);
+    box-shadow: 0 0 0 4px var(--live-soft), 0 0 14px 3px color-mix(in srgb, var(--live) 65%, transparent);
   }
 
   @keyframes travel-down {
@@ -290,9 +316,20 @@ code, kbd, .tabular {
     to { transform: translateY(calc(100% - 12px)); }
   }
 
+  @keyframes grow-down {
+    from { transform: scaleY(0); }
+    to { transform: scaleY(1); }
+  }
+
   @supports (animation-timeline: view()) {
     .timeline-scrubber {
       animation: travel-down linear both;
+      animation-timeline: view();
+      animation-range: cover 0% cover 100%;
+    }
+
+    .timeline-rail-progress {
+      animation: grow-down linear both;
       animation-timeline: view();
       animation-range: cover 0% cover 100%;
     }

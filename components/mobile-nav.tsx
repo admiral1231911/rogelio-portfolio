@@ -4,6 +4,7 @@ import { useState } from "react";
 import { Drawer } from "vaul";
 import { NAV_ITEMS, useActiveSection } from "@/components/sidebar-nav";
 import { StatusChip } from "@/components/status-chip";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export function MobileNav() {
   const [open, setOpen] = useState(false);
@@ -14,10 +15,12 @@ export function MobileNav() {
       <a href="#overview" className="text-sm font-semibold tracking-tight">
         RJI
       </a>
-      <Drawer.Root open={open} onOpenChange={setOpen} direction="top">
-        <Drawer.Trigger className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-strong">
-          Menu
-        </Drawer.Trigger>
+      <div className="flex items-center gap-3">
+        <ThemeToggle />
+        <Drawer.Root open={open} onOpenChange={setOpen} direction="top">
+          <Drawer.Trigger className="rounded-md border border-border px-3 py-1.5 text-sm text-muted-strong">
+            Menu
+          </Drawer.Trigger>
         <Drawer.Portal>
           <Drawer.Overlay className="fixed inset-0 z-50 bg-foreground/20" />
           <Drawer.Content className="fixed inset-x-0 top-0 z-50 rounded-b-xl bg-surface p-6 outline-none">
@@ -43,7 +46,8 @@ export function MobileNav() {
             </div>
           </Drawer.Content>
         </Drawer.Portal>
-      </Drawer.Root>
+        </Drawer.Root>
+      </div>
     </div>
   );
 }

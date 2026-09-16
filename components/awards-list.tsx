@@ -27,7 +27,7 @@ const AWARDS: Award[] = [
     name: "Ace Innovator",
     kind: "Awardee",
     detail: "Awarded for introducing innovative QA automation solutions — AI-driven scripting and internal tooling.",
-    image: "/images/awards/ace-innovator.jpg",
+    image: "/images/awards/ace-innovator-blurred.jpg",
   },
   {
     year: "2025",

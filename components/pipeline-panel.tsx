@@ -9,26 +9,47 @@ interface Stage {
 
 const STAGES: Stage[] = [
   {
-    id: "design-review",
+    id: "onboarding",
     detail:
-      "Reviews test design before scripting starts — part of the AIDLC workflow I built from zero setup at Infor.",
+      "Pulls in context, specs, and steering files so Kiro has everything it needs before work starts — part of the AIDLC workflow I built from zero setup at Infor.",
   },
   {
-    id: "script-development",
+    id: "test-design-creation",
+    detail: "Drafts the test design from requirements — the scenarios and coverage a script needs to satisfy.",
+  },
+  {
+    id: "test-design-review",
+    detail: "Reviews the test design for completeness and edge cases before any scripting starts.",
+  },
+  {
+    id: "script-generation-setup",
     detail:
       "Java + Selenium script generation, augmented by Kiro (agentic AI) and, earlier, Amazon Q Pro (~40% faster delivery as an early adopter).",
   },
   {
     id: "code-review",
-    detail: "Automated review pass before merge, across ~1,200 team-owned regression scripts.",
+    detail: "Automated review pass across ~1,200 team-owned regression scripts, with root-cause analysis on failures.",
   },
   {
-    id: "merge-request",
-    detail: "Merge-request creation and merge, with cherry-picking supported.",
+    id: "mr-creation",
+    detail: "Opens the merge request, staged for stabilization before it reaches the shared suite.",
+  },
+  {
+    id: "stabilization",
+    detail:
+      "Runs the script across tenants and environments to catch flakiness before it merges — the job the MCP server automates.",
+  },
+  {
+    id: "merge-cherry-picking",
+    detail: "Merges with cherry-picking supported, so a fix lands on the branches that need it without a full re-run.",
+  },
+  {
+    id: "release",
+    detail: "Ships into the team's regression suite — the end of a pipeline that cut development time by up to 68%.",
   },
 ];
 
-const BOOT_STEP_MS = 320;
+const BOOT_STEP_MS = 220;
 
 /**
  * Signature interaction: on mount the pipeline "runs" line by line, each
