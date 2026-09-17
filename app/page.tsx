@@ -8,7 +8,7 @@ import { CertificationsList } from "@/components/certifications-list";
 import { AwardsList } from "@/components/awards-list";
 import { RemoteWorkPanel } from "@/components/remote-work-panel";
 import { ContactDrawer } from "@/components/contact-drawer";
-import { MailIcon, PhoneIcon, LinkedInIcon, LocationIcon } from "@/components/icons";
+import { MailIcon, PhoneIcon, LinkedInIcon, LocationIcon, DocumentIcon } from "@/components/icons";
 
 function SectionHeading({ title }: { title: string }) {
   return <h2 className="border-b border-border pb-3 text-xl font-semibold text-foreground">{title}</h2>;
@@ -59,6 +59,15 @@ export default function Home() {
                 Get in touch
               </button>
             </ContactDrawer>
+            <a
+              href="/documents/rogelio-ibacarra-resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="flex items-center gap-2 rounded-lg border border-border-strong px-4 py-2.5 text-sm font-medium text-foreground transition-all duration-200 hover:-translate-y-0.5 hover:bg-surface-subtle hover:shadow-panel"
+            >
+              <DocumentIcon className="h-4 w-4" />
+              View résumé
+            </a>
             <a
               href="https://www.linkedin.com/in/rogeliojr-ibacarra"
               target="_blank"
@@ -159,6 +168,34 @@ export default function Home() {
               </div>
             </div>
           </div>
+
+          <div className="mt-6 grid gap-3 sm:grid-cols-2">
+            <a
+              href="/documents/rogelio-ibacarra-resume.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="panel flex items-start gap-3 rounded-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-raised"
+            >
+              <DocumentIcon className="mt-0.5 h-5 w-5 flex-none text-accent" />
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-muted">Document</p>
+                <p className="mt-1.5 text-sm font-medium text-foreground">Résumé (PDF)</p>
+              </div>
+            </a>
+            <a
+              href="/documents/rogelio-ibacarra-cv.pdf"
+              target="_blank"
+              rel="noreferrer"
+              className="panel flex items-start gap-3 rounded-lg p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-raised"
+            >
+              <DocumentIcon className="mt-0.5 h-5 w-5 flex-none text-accent" />
+              <div>
+                <p className="text-xs font-medium uppercase tracking-wide text-muted">Document</p>
+                <p className="mt-1.5 text-sm font-medium text-foreground">Full CV (PDF)</p>
+              </div>
+            </a>
+          </div>
+
           <div className="mt-6">
             <ContactDrawer>
               <button className="rounded-lg bg-accent px-4 py-2.5 text-sm font-medium text-accent-foreground shadow-panel transition-all duration-200 hover:-translate-y-0.5 hover:bg-accent-hover hover:shadow-raised">
